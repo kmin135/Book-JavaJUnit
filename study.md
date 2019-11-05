@@ -43,8 +43,55 @@ assertThat(account.name(), startsWith("John"));
 assertThat(new String[]{"a","b"}, equalTo(new String[]{"a","b"}));
 // is는 인자로 받은 매처를 그대로 리턴한다. 가독성을 높이는데 활용할 수 있다.
 assertThat(account.name(), is(equalTo("Bob")));
+// 단언에는 별도의 message를 추가할 수 있다. 하지만 코드의 깔끔함과 trade-off
+assertThat("account balance is 100", account.balance(), equalTo(50));
 ```
 
 
 
-// TMP : 191104 까지
+## 예외 처리
+
+```java
+// 1. 애너테이션
+@Test(expected=IllegalArugmentException.class)
+
+// 2. try-catch
+// catch 구문에서 예외 발생 후 exception에 대한 단언을 하는 경우 등에서 유용
+
+// 3. ExpectedException 규칙
+// 1번과 2번 스타일을 겸할 수 있음
+@Rule
+public ExpectedException thrown = ExpectedException.none();
+
+@Test
+public void exceptionRule() {
+    thrown.expect(IllegalArugmentException.class);
+    thrown.expectMessage("balance only 0");
+    account.withdraw(100);
+}
+```
+
+## 좋은 테스트 작성 가이드
+
+* 개별 메서드를 테스트하기보다 의미있는 동작 단위로 테스트 작성
+* 테스트 파일의 물리적인 위치는 소스 디렉토리는 분리하되 프로덕션 코드와 같은 패키지에 위치한다.
+* 내부 동작 (private, default, protected 메서드) 에 대한 테스트의 필요성을 느껴 테스트를 작성할 경우 특정 구현에 종속적인 테스트가 되며 이는 작은 수정에도 쉽게 깨지는 테스트가 된다. 또 그런 메서드들은 일반적으로 단일 책임 원칙 (SRP) 를 어기는 설계 문제를 가지고 있을 가능성이 높다. 따라서 별도의 클래스의 public 메서드로 분리할 수 있을지 검토해봐야한다.
+* 하나의 테스트는 하나의 목적을 가지는 것이 좋다. 작성의 편의성 때문에 하나의 테스트에 여러 테스트를 포함할수록 테스트의 의미가 추상적이게 되며 테스트가 깨졌을 때 문제를 파악하기도 어렵다.
+* 테스트 메서드 이름은 그 자체로 문서화될 정도로 구체적으로 작성하는 것이 좋다. 양식을 정했으면 일관성을 유지하는 것이 중요하다. 아래는 예이다.
+
+```java
+// 약 7개 정의 단어로 구성하는 방법
+doingSomeOperationGeneratesSomeResult
+
+// when, then
+whenDoingSomeBehaviorThenSomeResultOccurs
+```
+
+* 공통적인 사전작업이 많고 논리적으로 분리될 수 있다면 별도의 `@Before` 메서드로 분리하자. 순서가 보장되지 않음에 주의.
+* 단위 테스트는 빨라야하며 더 느린 통합 테스트는 별도로 다루는 것이 좋다.
+* 테스트 대상에서 제외하고 싶을 때는 주석처리하지말고 `@Ignore` 처리한다. 이는 별도로 수치화되기 때문에 까먹지 않게 된다.
+* 도구 : Infinitest (백그라운드에서 테스트를 항상 수행), CI과정에 테스트 포함시키기.
+
+
+
+// TMP : P97까지 진행
