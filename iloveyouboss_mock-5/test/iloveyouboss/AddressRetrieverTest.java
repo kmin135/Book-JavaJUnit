@@ -18,12 +18,24 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class AddressRetrieverTest {
+   // mock을 합성하고자 하는 객체 
    @Mock private Http http;
+   // mock을 주입하고자 하는 대상
    @InjectMocks private AddressRetriever retriever;
    
    @Before
    public void createRetriever() {
       retriever = new AddressRetriever();
+      /* 
+       * mockito는 테스트 클래스에서 @Mock 이 붙은 필드를 가져와
+       * 각각의 mock 인스턴스를 합성한다. (org.mockito.Mockito.mock(Http.class) 와 동일)
+       * 그 후 @InjectMocks 가 붙은 필드를 가져와 mock 객체들을 거기에 주입한다.
+       *
+       * mock을 주입할 때 mockito는 
+       * 1. 생성자를 통해 주입
+       * 2. 없으면 setter로 주입
+       * 3. 없으면 필드를 찾아서 주입
+       */
       MockitoAnnotations.initMocks(this);
    }
 
