@@ -33,6 +33,7 @@ public class SearchTest {
       stream.close();
    }
 
+   // 앞 뒤로 가독성좋게 10자리 스트링을 넣어 준비와 단언과정이 쉽게 이해된다.
    @Test
    public void returnsMatchesShowingContextWhenSearchStringInContent() {
       stream = streamOn("rest of text here"
@@ -49,6 +50,7 @@ public class SearchTest {
                     "1234567890search term1234567890") }));
    }
 
+   // 검색되지 않는 다는 내용이 준비와 단언과정으로 잘 이해된다.
    @Test
    public void noMatchesReturnedWhenSearchStringNotInContent() {
       stream = streamOn("any text");
