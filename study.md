@@ -295,7 +295,7 @@ whenDoingSomeBehaviorThenSomeResultOccurs
 * 테스트의 가장 중요한 질문 : "왜 그러한 결과를 기대하는가?"
 * Arrange와 Assert를 상호 연관 지을 수 있어야한다.
 * 의미 있는 상수, 좋은 변수 이름 등 센스가 필요한 영역
-* [암시적 의미 예제](iloveyouboss_test-9/test/util/SearchTest.java)
+* [암시적 의미 예제](iloveyouboss_test-09/test/util/SearchTest.java)
 
 ### 기타
 
